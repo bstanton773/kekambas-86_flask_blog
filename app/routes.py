@@ -33,3 +33,8 @@ def login():
     title = 'Log In'
     return render_template('login.html', title=title)
 
+
+@app.route('/register-address')
+def register_address():
+    title = 'Register Address'
+    return render_template('register_address.html', title=title)
