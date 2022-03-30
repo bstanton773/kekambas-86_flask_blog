@@ -1,6 +1,6 @@
 from app import app
 from flask import redirect, render_template, url_for
-from app.forms import SignUpForm
+from app.forms import SignUpForm, RegisterAddressForm
 from app.models import User, Post
 
 @app.route('/')
@@ -37,4 +37,5 @@ def login():
 @app.route('/register-address')
 def register_address():
     title = 'Register Address'
-    return render_template('register_address.html', title=title)
+    form = RegisterAddressForm()
+    return render_template('register_address.html', title=title, form=form)
