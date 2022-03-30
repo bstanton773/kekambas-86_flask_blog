@@ -1,7 +1,7 @@
 from app import app
 from flask import redirect, render_template, url_for
 from app.forms import SignUpForm, RegisterAddressForm
-from app.models import User, Post
+from app.models import User, Post, Address
 
 @app.route('/')
 def index():
@@ -38,9 +38,11 @@ def login():
 def register_address():
     title = 'Register Address'
     form = RegisterAddressForm()
+    addresses = Address.query.all()
     if form.validate_on_submit():
         name = form.name.data
         address = form.address.data
         phone = form.phone_number.data
-        print(name, address, phone)
-    return render_template('register_address.html', title=title, form=form)
+        Address(name=name, address=address, phone_number=phone)
+        return redirect(url_for('index'))
+    return render_template('register_address.html', title=title, form=form, addresses=addresses)
