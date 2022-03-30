@@ -34,8 +34,13 @@ def login():
     return render_template('login.html', title=title)
 
 
-@app.route('/register-address')
+@app.route('/register-address', methods=['GET', 'POST'])
 def register_address():
     title = 'Register Address'
     form = RegisterAddressForm()
+    if form.validate_on_submit():
+        name = form.name.data
+        address = form.address.data
+        phone = form.phone_number.data
+        print(name, address, phone)
     return render_template('register_address.html', title=title, form=form)
