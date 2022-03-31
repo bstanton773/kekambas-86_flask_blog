@@ -3,13 +3,16 @@
 
 {% block content %}
     <h1>Log In</h1>
-    <form>
+    <form method="post">
+        {{ form.csrf_token }}
         <div class="form-group">
-            <label for="username">Username</label>
-            <input type="text" name="username" class="form-control" placeholder="Username" />
-            <label for="password">Password</label>
-            <input type="password" name="passwod" class="form-control" placeholder="Password" />
-            <input type="submit" class="btn btn-primary w-100" />
+            {{ form.username.label }}
+            {{ form.username(class='form-control', placeholder='Username') }}
+
+            {{ form.password.label }}
+            {{ form.password(class='form-control', placeholder='Password') }}
+
+            {{ form.submit(class='btn btn-primary w-100') }}
         </div>
     </form>
 {% endblock content %}  
