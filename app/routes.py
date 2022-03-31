@@ -1,6 +1,6 @@
 from app import app
 from flask import redirect, render_template, url_for
-from flask_login import login_user, logout_user, login_required
+from flask_login import current_user, login_user, logout_user, login_required
 from app.forms import SignUpForm, RegisterAddressForm, LoginForm
 from app.models import User, Post, Address
 
@@ -53,11 +53,11 @@ def logout():
 def register_address():
     title = 'Register Address'
     form = RegisterAddressForm()
-    addresses = Address.query.all()
+    addresses = current_user.addresses.all()
     if form.validate_on_submit():
         name = form.name.data
         address = form.address.data
         phone = form.phone_number.data
-        Address(name=name, address=address, phone_number=phone)
+        Address(name=name, address=address, phone_number=phone, user_id=current_user.id)
         return redirect(url_for('index'))
     return render_template('register_address.html', title=title, form=form, addresses=addresses)
