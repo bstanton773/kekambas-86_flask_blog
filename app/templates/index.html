@@ -3,7 +3,7 @@
 
 {% block content %}
 
-    {% if current_user.username %}
+    {% if current_user.is_authenticated %}
     <h1>Hello {{ current_user.username }}!</h1>
     {% else %}
     <h1>Hello please sign up to use our blog</h1>

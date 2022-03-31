@@ -1,14 +1,14 @@
 from app import app
 from flask import redirect, render_template, url_for
+from flask_login import login_user
 from app.forms import SignUpForm, RegisterAddressForm, LoginForm
 from app.models import User, Post, Address
 
 @app.route('/')
 def index():
     title = 'Home'
-    user = {'id': 1, 'username': 'bstanton', 'email': 'brians@codingtemple.com'}
     posts = Post.query.all()
-    return render_template('index.html', current_user=user, title=title, posts=posts)
+    return render_template('index.html', title=title, posts=posts)
 
 
 @app.route('/signup', methods=["GET", "POST"])
@@ -32,6 +32,14 @@ def signup():
 def login():
     title = 'Log In'
     form = LoginForm()
+    if form.validate_on_submit():
+        username = form.username.data
+        password = form.password.data
+        user = User.query.filter_by(username=username).first()
+        if user and user.check_password(password):
+            login_user(user)
+            print('User has been logged in')
+            return redirect(url_for('index'))
     return render_template('login.html', title=title, form=form)
 
 
