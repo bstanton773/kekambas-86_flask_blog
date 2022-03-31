@@ -1,6 +1,6 @@
 from app import app
 from flask import redirect, render_template, url_for
-from flask_login import login_user, logout_user
+from flask_login import login_user, logout_user, login_required
 from app.forms import SignUpForm, RegisterAddressForm, LoginForm
 from app.models import User, Post, Address
 
@@ -49,6 +49,7 @@ def logout():
 
 
 @app.route('/register-address', methods=['GET', 'POST'])
+@login_required
 def register_address():
     title = 'Register Address'
     form = RegisterAddressForm()
