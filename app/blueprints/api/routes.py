@@ -80,3 +80,15 @@ def edit_post(post_id):
             return jsonify({'error': f'{key} is not an acceptable property'}), 400
     post.update(**data)
     return jsonify(post.to_dict())
+
+
+# Delete a post by post id
+@api.route('/delete-posts/<int:post_id>', methods=['DELETE'])
+@token_auth.login_required
+def delete_post(post_id):
+    post = Post.query.get_or_404(post_id)
+    current_user = token_auth.current_user()
+    if post.author != current_user:
+        return jsonify({'error': 'You do not have authorization to delete this post'}), 403
+    post.delete()
+    return jsonify({}), 204
