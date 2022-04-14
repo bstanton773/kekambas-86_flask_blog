@@ -25,6 +25,9 @@ def create_user():
     username = data['username']
     email = data['email']
     password = data['password']
+    users_with_that_info = User.query.filter((User.username==username)|(User.email==email)).all()
+    if users_with_that_info:
+        return jsonify({'error': 'A user with that username and/or email already exists'}), 400
     new_user = User(username=username, email=email, password=password)
     return jsonify(new_user.to_dict()), 201
 
