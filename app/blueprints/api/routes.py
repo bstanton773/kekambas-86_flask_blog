@@ -62,3 +62,21 @@ def create_post():
     user_id = token_auth.current_user().id
     new_post = Post(title=title, body=body, user_id=user_id)
     return jsonify(new_post.to_dict()), 201
+
+
+# Edit a post by post id
+@api.route('/edit-posts/<int:post_id>', methods=['PUT'])
+@token_auth.login_required
+def edit_post(post_id):
+    post = Post.query.get_or_404(post_id)
+    current_user = token_auth.current_user()
+    if post.author != current_user:
+        return jsonify({'error': 'You do not have authorization to edit this post'}), 403
+    if not request.is_json:
+        return jsonify({'error': 'Your request content-type must be application/json'}), 400
+    data = request.json
+    for key in data.keys():
+        if key not in {'title', 'body'}:
+            return jsonify({'error': f'{key} is not an acceptable property'}), 400
+    post.update(**data)
+    return jsonify(post.to_dict())
